@@ -18,5 +18,5 @@ from . import views
 
 urlpatterns = [
     url('index', views.index, name='index'),
-    url('post', views.post, name='post')
+    url('temperature_data', views.post, name='post')
 ]

@@ -17,10 +17,19 @@ def index(request):
 def post(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        with open(os.path.join(sys.path[0],"data.csv"),"a") as file: # Use file to refer to the file object
-            file.write(str(data['temperatura'])+"\n")
-        print("A temperatura é: {0}C".format(data['temperatura']))
-        return HttpResponse("WOW!")
+        try:
+            HASH = data['HASH']
+        except:
+            HASH = ""
+        if(HASH == "HA3958KTPrs9*#8"): # A HASH provided by the devices to avoid users to create posts
+            with open(os.path.join(sys.path[0],"data.csv"),"a") as file: # Use file to refer to the file object
+                file.write(str(data['temperatura'])+"\n")
+            print("A temperatura é: {0}C".format(data['temperatura']))
+
+            return HttpResponse("PERFECT!")
+        else:
+            print("The device haven't provide the right HASH.")
+            return HttpResponse("You haven't provide the right HASH.")
     else:
         test_file = open(os.path.join(sys.path[0],"data.csv"), 'rb')
         response = HttpResponse(content=test_file)
