@@ -38,3 +38,11 @@ def post(request):
 
         return response
 
+def page(request):
+    names = ["AA", "BBB", "CCC"]
+    prices = [10,5,14]
+    context = {
+        'names': json.dumps(names),
+        'prices': json.dumps(prices),
+    }
+    return render(request, 'Temperature_dashboard/dashboard.html',context)
