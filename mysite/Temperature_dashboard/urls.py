@@ -13,10 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+from django.conf.urls import url
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('Temperature_dashboard.urls')) #When the page grows, just change this for another url
+    url('index', views.index, name='index'),
+    url('post', views.post, name='post')
 ]
