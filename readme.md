@@ -9,7 +9,7 @@ Other measurements were taken, like the temperature in a barbecue grill.
 **City**: Cacoal, state of Rondônia, Brazil
 
 
-######The Cacoal location
+###### The Cacoal location
 
 ![Cacoal location](assets/imgs/Cacoal_map.png)
 
