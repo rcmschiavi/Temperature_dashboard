@@ -9,7 +9,8 @@ Other measurements were taken, like the temperature in a barbecue grill.
 **City**: Cacoal, state of Rondônia, Brazil
 
 
-The Cacoal location
+######The Cacoal location
+
 ![Cacoal location](assets/imgs/Cacoal_map.png)
 
 **Device**:
@@ -18,4 +19,4 @@ The Cacoal location
 - Type K Thermocouple with a MAX6675 module. (Barbecue grill)
 
 
-##### Soon~~, maybe not that soon,~~ the application will be online and the URL will be placed here.
+##### Soon ~~, maybe not that soon,~~ the application will be online and the URL will be placed here.
