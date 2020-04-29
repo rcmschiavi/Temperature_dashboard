@@ -46,3 +46,5 @@ def page(request):
         'prices': json.dumps(prices),
     }
     return render(request, 'Temperature_dashboard/dashboard.html',context)
+
+def vue_test(request):
