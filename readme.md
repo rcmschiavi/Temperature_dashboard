@@ -10,7 +10,7 @@ Other measurements were taken, like the temperature in a barbecue grill.
 
 
 The Cacoal location
-![Cacoal location](../assets/imgs/Cacoal_map.png)
+![Cacoal location](assets/imgs/Cacoal_map.png)
 
 **Device**:
 - ESP8266;
