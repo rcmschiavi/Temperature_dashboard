@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 
+{% block title %}Temperature {% endblock %}
+
 {% block content %}
-  <canvas id="productsChart" width="600" height="100"></canvas>
+  <h1> Gráfico da temperatura nas últimas 24h</h1>
+  <canvas id="productsChart" width="600px" height="100px" margin="20px"></canvas>
+  <b>Temperatura atual: </b>
+  <em id="temp"></em><br>
+  <b>Coletada às: </b>
+  <em id="time"></em>
 {% endblock %}
 
 {% block scripts %}
 <script>
 var ctx = document.getElementById("productsChart");
-var names = JSON.parse('{{ names|safe }}');
-var prices = JSON.parse('{{ prices|safe }}');
+var names = {{ names|safe }};
+var prices = {{ prices|safe }};
+var A = Date.now()
 
 var productsChart = new Chart(ctx, {
     type: 'line',
@@ -17,16 +25,6 @@ var productsChart = new Chart(ctx, {
         datasets: [{
             label: 'Produtos',
             data: prices,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)'
-            ],
             borderWidth: 1
         }]
     },
@@ -34,11 +32,27 @@ var productsChart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero:true
+                    max: 35,
+                    min: 30
                 }
             }]
         }
     }
 });
+addData()
+function addData() {
+        jQuery.getJSON("update_chart", function(data, status)
+        {
+            var temp_atual = data.temp;
+            var horario = Date.parse(data.time);
+            horario = Date(horario)
+            document.getElementById("temp").innerHTML = temp_atual + "°C ";
+            document.getElementById("time").innerHTML = horario;
+        }
+        );
+}
+
+setInterval(addData,10000);
+
 </script>
 {% endblock %}
