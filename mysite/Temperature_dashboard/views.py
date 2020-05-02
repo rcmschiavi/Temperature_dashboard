@@ -72,7 +72,7 @@ def temperature_chart_view(request):
         'names': date,
         'prices': data,
     }
-    print(context)
+    #print(context)
     return render(request, 'Temperature_dashboard/dashboard.html', context)
 
 def update_chart(request):
@@ -95,13 +95,14 @@ def update_chart(request):
 def get_temp_hour(dataset):
     df = pd.DataFrame(list(dataset))
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
-    print(df.head())
+    today = pd.Timestamp.today(tz = 'Etc/Greenwich').date()
+    df2 = df.loc[df.REGISTERED_AT == today]
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
     hour = pd.to_timedelta(df.REGISTERED_AT.dt.hour, unit='H')
     hour.name = "REGISTERED_AT"
-    print(df.head())
+    #print(df.head())
     df = df.groupby(hour).mean()
     df.index = df.index.astype(str)
     df.TEMPERATURE = df.TEMPERATURE.round(2)
-    print(df)
+    #print(df)
     return list(df.index[:24]),list(df.TEMPERATURE[:24])
