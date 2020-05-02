@@ -82,6 +82,16 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
     }
 }
+#Replace with the following code when in python anywhere
+# DATABASES = {
+# 'default': {
+# 'ENGINE': 'django.db.backends.mysql',
+# 'NAME': 'rodolfoSchiavi$default',
+# 'USER': 'rodolfoSchiavi',
+# 'PASSWORD': '<change-this>',
+# 'HOST': 'rodolfoSchiavi.mysql.pythonanywhere-services.com',
+# }
+# }
 
 
 

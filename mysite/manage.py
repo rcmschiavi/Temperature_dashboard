@@ -6,6 +6,13 @@ import sys
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
+    # Replace with the following code when in pythonanywhere
+    # try:
+    #     import pymysql
+    #     pymysql.install_as_MySQLdb()
+    # except:
+    #     pass
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
