@@ -102,5 +102,6 @@ def get_temp_hour(dataset):
     print(df.head())
     df = df.groupby(hour).mean()
     df.index = df.index.astype(str)
+    df.TEMPERATURE = df.TEMPERATURE.round(2)
     print(df)
     return list(df.index[:24]),list(df.TEMPERATURE[:24])
