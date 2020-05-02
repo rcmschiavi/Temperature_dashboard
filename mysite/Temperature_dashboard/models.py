@@ -11,3 +11,7 @@ class Temperature(models.Model):
     class Meta:
        managed = True
        db_table = 'TEMPERATURE'
+
+# On python anywhere I had to create the table manually, with the following command:
+# CREATE TABLE TEMPERATURE (id int NOT NULL AUTO_INCREMENT, TEMPERATURE decimal(5,2), REGISTERED_AT datetime, primary key (id));
+# Logged on the right database
