@@ -1,44 +1,64 @@
 {% extends "base.html" %}
 
+
+{% block head %}
+
+<script src="vue.js"></script>
+<script src="vue-google-charts/dist/vue-google-charts.browser.js"></script>
+
+{% endblock head %}
+
+
 {% block title %}Temperature {% endblock %}
 
 {% block content %}
-  <h1> Gráfico da temperatura nas últimas 24h</h1>
-  <canvas id="productsChart" width="600px" height="100px" margin="20px"></canvas>
-  <b>Temperatura atual: </b>
+  <h1> Temperature chart throught the day</h1>
+  <div id="chart_div"></div>
+  <b>Temperature: </b>
   <em id="temp"></em><br>
-  <b>Coletada às: </b>
+  <b>At: </b>
   <em id="time"></em>
 {% endblock %}
 
 {% block scripts %}
-<script>
-var ctx = document.getElementById("productsChart");
-var names = {{ names|safe }};
-var prices = {{ prices|safe }};
-var A = Date.now()
 
-var productsChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: names,
-        datasets: [{
-            label: 'Temperatura',
-            data: prices,
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    max: 35,
-                    min: 25
-                }
-            }]
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {packages: ['corechart', 'bar']});
+    google.charts.setOnLoadCallback(drawColColors);
+
+function drawColColors() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('timeofday', 'Time of Day');
+      data.addColumn('number', 'Max. Temperature');
+      data.addColumn('number', 'Mean');
+      data.addColumn('number', 'Min Temperature');
+      var dataValues = {{ listData|safe }}
+      console.log(dataValues);
+      data.addRows(dataValues);
+
+      var options = {
+        title: 'Temperature Throughout the Day',
+        colors: ['red', 'green', 'blue'],
+        hAxis: {
+          title: 'Time of Day',
+          format: 'h:mm a',
+          viewWindow: {
+            min: [0, 0, 0],
+            max: [23, 30, 0]
+          }
+        },
+        vAxis: {
+          title: 'Temperature °C'
         }
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
     }
-});
+  </script>
+<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
+<script>
 addData()
 function addData() {
         jQuery.getJSON("update_chart", function(data, status)

@@ -17,8 +17,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url('index', views.index, name='index'),
     url('temperature_data', views.post, name='post'),
     url('dashboard', views.temperature_chart_view, name= 'dashboard'),
-    url('update_chart', views.update_chart, name='update_chart')
+    url('update_chart', views.update_chart, name='update_chart'),
+    url('', views.index, name='index')
 ]

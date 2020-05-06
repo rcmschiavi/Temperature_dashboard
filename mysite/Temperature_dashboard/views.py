@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from .models import Temperature
 import datetime
 import pandas as pd
+import numpy as np
 
 import csv
 import json
@@ -14,7 +15,7 @@ import os
 import sys
 
 def index(request):
-    return HttpResponse("<h1>HEEEY</h1>")
+    return HttpResponse("<a href=\"http://127.0.0.1:8000/dashboard\" style=\"font-size:100px\";>Chart</a>")
 # Create your views here.
 
 
@@ -67,10 +68,9 @@ def temperature_chart_view(request):
         else None
     )
     queryset = Temperature.objects.order_by('-REGISTERED_AT').values('TEMPERATURE','REGISTERED_AT')
-    date, data = get_temp_hour(queryset)
+    listData = get_temp_hour(queryset)
     context = {
-        'names': date,
-        'prices': data,
+        'listData': listData
     }
     #print(context)
     return render(request, 'Temperature_dashboard/dashboard.html', context)
@@ -95,14 +95,41 @@ def update_chart(request):
 def get_temp_hour(dataset):
     df = pd.DataFrame(list(dataset))
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
-    today = pd.Timestamp.today(tz = 'Etc/Greenwich').date()
-    df2 = df.loc[df.REGISTERED_AT == today]
+    date = datetime.date.today()
+    day = int(date.strftime("%d"))
+    month = int(date.strftime("%m"))
+    year = int(date.strftime("%Y"))
+    df = filter_date(df,year,month,day)
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
     hour = pd.to_timedelta(df.REGISTERED_AT.dt.hour, unit='H')
     hour.name = "REGISTERED_AT"
-    #print(df.head())
-    df = df.groupby(hour).mean()
-    df.index = df.index.astype(str)
-    df.TEMPERATURE = df.TEMPERATURE.round(2)
-    #print(df)
-    return list(df.index[:24]),list(df.TEMPERATURE[:24])
+    df2 = df.groupby(hour).mean()
+    listData = format_data(df, df2)
+    df2.index = df2.index.astype(str)
+    df2.TEMPERATURE = df2.TEMPERATURE.round(2)
+    return listData
+
+
+def filter_date(df, year,month,day):
+    df = df[df.REGISTERED_AT.dt.year==year]
+    df = df[df.REGISTERED_AT.dt.month==month]
+    df = df[df.REGISTERED_AT.dt.day==day]
+    return df
+
+def format_data(df, df2):
+    #[{v: [8, 0, 0], f: '8 am'}, 1, .25, 5]
+    dataDict: {}
+    listData = []
+    listHour = []
+    for hour in df2.index:
+
+        a = np.timedelta64(hour.to_numpy(), 'ns')
+        #a = a.astype('timedelta64[h]')
+        a = int(a/3600000000000)
+        df3 = df[df.REGISTERED_AT.dt.hour == a]
+        #print(df3.max().TEMPERATURE)
+        dataDict = {"v":[a,0,0],"f":"Time: "+  str(a)+":00"}
+        listHour = [dataDict, df3.max().TEMPERATURE,df3.mean().round(2).TEMPERATURE,df3.min().TEMPERATURE]
+        listData.append(listHour)
+    print(listData)
+    return listData
