@@ -57,17 +57,16 @@ function drawColColors() {
       chart.draw(data, options);
     }
   </script>
-<div id="columnchart_values" style="width: 900px; height: 300px;"></div>
 <script>
 addData()
 function addData() {
         jQuery.getJSON("update_chart", function(data, status)
         {
             var temp_atual = data.temp;
-            var horario = Date.parse(data.time);
-            horario = Date(horario)
+            var horario = data.time;
+            //horario = Date(horario)
             document.getElementById("temp").innerHTML = temp_atual + "°C ";
-            document.getElementById("time").innerHTML = horario;
+            document.getElementById("time").innerHTML = horario + " (Local time - Timezone: -04:00)";
         }
         );
 }

@@ -8,11 +8,14 @@ from .models import Temperature
 import datetime
 import pandas as pd
 import numpy as np
+import pytz
 
 import csv
 import json
 import os
 import sys
+
+tz = pytz.timezone('America/Caracas')
 
 def index(request):
     return HttpResponse("<a href=\"http://127.0.0.1:8000/dashboard\" style=\"font-size:100px\";>Chart</a>")
@@ -76,6 +79,7 @@ def temperature_chart_view(request):
     return render(request, 'Temperature_dashboard/dashboard.html', context)
 
 def update_chart(request):
+    global tz
     date = []
     data = []
     date_handler = lambda obj: (
@@ -86,20 +90,23 @@ def update_chart(request):
     query = Temperature.objects.order_by('-REGISTERED_AT')[0]
     context = {
         'temp': query.TEMPERATURE,
-        'time': query.REGISTERED_AT
+        'time': query.REGISTERED_AT.astimezone(tz).__format__('%c')
     }
     #print("Chamou:" + str(context))
     return JsonResponse(context)
 
 
 def get_temp_hour(dataset):
+    global tz
     df = pd.DataFrame(list(dataset))
+    df = df[df.TEMPERATURE != -127]
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
-    date = datetime.date.today()
+    df.REGISTERED_AT = df.REGISTERED_AT.dt.tz_convert('America/Caracas')
+    date = datetime.datetime.now(tz)
     day = int(date.strftime("%d"))
     month = int(date.strftime("%m"))
     year = int(date.strftime("%Y"))
-    df = filter_date(df,year,month,day)
+    df = filter_date(df,year,month,1)
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
     hour = pd.to_timedelta(df.REGISTERED_AT.dt.hour, unit='H')
     hour.name = "REGISTERED_AT"
@@ -122,14 +129,10 @@ def format_data(df, df2):
     listData = []
     listHour = []
     for hour in df2.index:
-
         a = np.timedelta64(hour.to_numpy(), 'ns')
-        #a = a.astype('timedelta64[h]')
         a = int(a/3600000000000)
         df3 = df[df.REGISTERED_AT.dt.hour == a]
-        #print(df3.max().TEMPERATURE)
         dataDict = {"v":[a,0,0],"f":"Time: "+  str(a)+":00"}
         listHour = [dataDict, df3.max().TEMPERATURE,df3.mean().round(2).TEMPERATURE,df3.min().TEMPERATURE]
         listData.append(listHour)
-    print(listData)
     return listData
