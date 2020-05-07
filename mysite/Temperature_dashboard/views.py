@@ -106,7 +106,7 @@ def get_temp_hour(dataset):
     day = int(date.strftime("%d"))
     month = int(date.strftime("%m"))
     year = int(date.strftime("%Y"))
-    df = filter_date(df,year,month,1)
+    df = filter_date(df,year,month,day)
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
     hour = pd.to_timedelta(df.REGISTERED_AT.dt.hour, unit='H')
     hour.name = "REGISTERED_AT"
