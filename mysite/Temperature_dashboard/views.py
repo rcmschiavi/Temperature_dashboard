@@ -18,7 +18,7 @@ import sys
 tz = pytz.timezone('America/Caracas')
 
 def index(request):
-    return HttpResponse("<a href=\"http://127.0.0.1:8000/dashboard\" style=\"font-size:100px\";>Chart</a>")
+    return render(request, 'index.html')
 # Create your views here.
 
 
@@ -136,3 +136,7 @@ def format_data(df, df2):
         listHour = [dataDict, df3.max().TEMPERATURE,df3.mean().round(2).TEMPERATURE,df3.min().TEMPERATURE]
         listData.append(listHour)
     return listData
+
+
+def test_vue(request):
+    return render(request, 'test_vue/test_vue.html')

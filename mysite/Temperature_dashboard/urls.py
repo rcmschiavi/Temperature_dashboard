@@ -20,5 +20,6 @@ urlpatterns = [
     url('temperature_data', views.post, name='post'),
     url('dashboard', views.temperature_chart_view, name= 'dashboard'),
     url('update_chart', views.update_chart, name='update_chart'),
+    url('test_vue', views.test_vue, name='test_vue'),
     url('', views.index, name='index')
 ]
