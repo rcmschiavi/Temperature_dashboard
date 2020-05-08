@@ -6,48 +6,97 @@
     <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css">
     <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css">
 
+
+    <nav>
+
+    </nav>
+
 </head>
+<body>
+    <div id="app">
+    <div class="title">
+        <h1 id="hNPage"> Rodolfo Schiavi's Page</h1>
+        <div id="menu-box">
+        </div>
+        <div id="menu-items-box">
+
+        <md-button class="md-dense md-raised md-primary">Home</md-button>
+        <md-button class="md-dense md-raised md-primary">Projects</md-button>
+        <md-button class="md-dense md-raised md-primary">Contact</md-button>
+        </div>
+
+
+    </div>
+    <main>
+
+    </main>
+    </div>
+</body>
+<!--
     <div id="app">
 
-          <div class="md-layout">
-                  <div class="md-layout-item"></div>
+  <div class="md-layout" >
     <div class="md-layout-item">  <md-button class="md-icon-button md-raised" href="/">
         <md-icon>home</md-icon>
       </md-button></div>
-    <div class="md-layout-item">  <md-button class="md-icon-button md-raised" href="/">
+    <div class="md-layout-item">  <md-button class="md-icon-button md-raised" id="home-b" href="/">
         <md-icon>home</md-icon>
       </md-button></div>
-    <div class="md-layout-item"></div>
   </div>
 
-<style>
 
-  .md-layout-item {
-    width:100px;
-    height: 140px;
-    border: 1px solid black;
-    visibility: visible;
-    &:nth-child(1) {
-      background-color: #92a8d1;
-    }
-    &:nth-child(2) {
-    align-items: center;
-      background-color: #92a8d1;
-    }
-
-    &:nth-child(3) {
-      background-color: #92a8d1;
-    }
-  }
-</style>
     </div>
-
+-->
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/vue-material"></script>
     <script>
       Vue.use(VueMaterial.default)
 
       new Vue({
-        el: '#app'
+        el: '#app',
       })
     </script>
+
+
+<style>
+
+    h1{
+    padding-top:10px;
+    text-align:center;
+    }
+
+    .title{
+    border-radius:5px;
+    margin:10px;
+    height:100px;
+    align-items: center;
+    background-image: url("https://www.ready.gov/sites/default/files/2019-09/volcano.jpg");
+    }
+
+    #menu-box{
+    padding:10px;
+    margin-left:10px;
+    width:305px;
+    height:50px;
+    background-color:lightblue;
+    border-radius:10px;
+    opacity:0.5;
+    }
+
+    #hNPage{
+    color:blue;
+    }
+
+
+    main{
+    margin:20px;
+    }
+
+    #menu-items-box{
+    margin-left:10px;
+        position: relative;
+        bottom: 48px;
+    }
+
+
+</style>
