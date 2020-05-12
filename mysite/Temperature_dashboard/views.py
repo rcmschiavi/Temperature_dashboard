@@ -99,7 +99,7 @@ def update_chart(request):
 def get_temp_hour(dataset):
     global tz
     df = pd.DataFrame(list(dataset))
-    df = df[df.TEMPERATURE != -127]
+    df = df[df.TEMPERATURE >= -120]
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
     df.REGISTERED_AT = df.REGISTERED_AT.dt.tz_convert('America/Caracas')
     date = datetime.datetime.now(tz)
