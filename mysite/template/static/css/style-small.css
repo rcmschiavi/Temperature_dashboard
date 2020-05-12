@@ -133,3 +133,9 @@
 		#footer .icons {
 			margin: 0 0 2em 0;
 		}
+
+
+			#chart_wrapper {
+          overflow-x: scroll;
+          overflow-y: hidden;
+        }
