@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Temperature chart</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/jquery.dropotron.min.js"></script>
+		<script src="static/js/jquery.scrollgress.min.js"></script>
+		<script src="static/js/jquery.scrolly.min.js"></script>
+		<script src="static/js/jquery.slidertron.min.js"></script>
+		<script src="static/js/skel.min.js"></script>
+		<script src="static/js/skel-layers.min.js"></script>
+		<script src="static/js/init.js"></script>
+
+		<script src="static/js/chart_day.js" type="text/javascript"></script>
+
+
+		<!-- Vue plus google charts -->
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+		<!--[if lte IE 9]><link rel="stylesheet" href="css/ie/v9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header" class="skel-layers-fixed">
+				<nav id="nav">
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li>
+							<a href="" class="icon fa-angle-down">Projects</a>
+							<ul>
+								<li><a href="">Temperature chart</a></li>
+							</ul>
+						</li>
+						<li><a href="elements.html">Contact</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper style1">
+				<header class="major">
+					<h2>Temperature Dashboard for IoT device</h2>
+					<p>A small hobbist project involving Cloud and Electronics</p>
+				</header>
+				<div class="container">
+
+					<!-- Content -->
+						<section id="content">
+							<h2 style="color:#047108">Temperature today in Cacoal, Rondônia, Brazil</h2>
+							<div id="chart_wrapper">
+								<div id="chart_div"></div>
+							</div>
+							<br>
+							<span>
+								<h2 style="color:#bb2313">What is this about!?</h2>
+								<span>
+									<p>    As a<small style="font-size:10px;">n almost</small> Mechatronics Engineer, I love to play around with IoT and electronics. So I decided to take this passion and implement it in my webpage, joining a real world thing, climate and temperature, with the virtual world.</p>
+									<p>    When you live in a place as hot as the state I grew up, you get used to complain about the hot wheather, but in generally we actually don't know the temperature.</p>
+									<p>   Thanks to google and wheater services, nowadays it's easy to know how hot it is, but I'm very skeptical and decided to get the data by myself.</p>
+									<br>
+								</span>
+
+								<span class="image fit">
+									<img src="static/images/temperature_chart/sckeptical_dog2.jpg" style="display: block;margin-left:auto;margin-right:auto;max-width:200px;" alt=""/>
+									<figcaption style="display: block;margin-left:auto;margin-right:auto;max-width:200px; color:#ff4901"> -- My pal, the skeptical dog. --</figcaption>
+								</span>
+								<h2 style="color:#7301a7">How this <del style="font-size:20px;">useless</del> project was done?</h2>
+								<p style="display:none;"> Well, my dear. If you're still reading this, you're a brave and unoccupied guy or girl(or whatever gender you prefer).
+									I removed this using display none for now, because of a job interview and maybe this paragraph looks offensive, but I doubt someone will ever read this. I feel like working in a group school homework doing all the job and writing comments for my colleagues read, but knowing that no one will.</p>
+								<p> Let's go to what really matters, or not that much, the project:</p>
+								<p> The project is divided in two main fronts, the IoT device, and its electronics, and some <span style="font-size:30px">☁</span>️ service (cloud service, if you didn't get it). So I'll divide this topic in those two subtopics.</p>
+								<h3 style="color:#47c707">The IoT device and electronics</h3>
+								<p>In order to get this thing working, I used the following electronics:</p>
+								<ul>
+									<li><b style="color:red">ESP8266</b> - A very famous device for IoT prototyping, I used it to send the information to the cloud;</li>
+									<li><b style="color:red">DS18B20</b> - Water proof temperature sensor with a good precison, about ±0,5ºC;</li>
+									<li><b style="color:red">1KΩ resistor</b> - Required for the sensor.</li>
+								</ul>
+								<h3 style="color:#47c707">The cloud</h3>
+								<p>As you may noticed, I'm using python anywhere, which is made with a instance of AWS, but with a easier setup, faster to deploy.</p>
+								<h1 style="color:blue;font-size:20px">I haven't finished this article yet. Other more important things have to be done.</h1>>
+								<h2 style="color:#01a799;visibility:hidden">What still has to be done?</h2>
+							</span>
+						</section>
+								
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+					<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+					<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+					<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+					<li><a href="#" class="icon fa-envelope"><span class="label">Envelope</span></a></li>
+				</ul>
+				<ul class="menu">
+					<li><a href="#">FAQ</a></li>
+					<li><a href="#">Terms of Use</a></li>
+					<li><a href="#">Privacy</a></li>
+					<li><a href="#">Contact</a></li>
+				</ul>
+				<span class="copyright">
+			&copy; Copyright. All rights reserved. Design by <a href="http://www.html5webtemplates.co.uk">Responsive Web Templates</a>
+				</span>
+			</footer>
+
+	</body>
+
+<script> callChart({{listData | safe}});</script>
+</html>

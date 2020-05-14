@@ -50,18 +50,6 @@ def post(request):
 
         return response
 
-def page(request):
-    names = ["AA", "BBB", "CCC"]
-    prices = [10,5,14]
-    context = {
-        'names': json.dumps(names),
-        'prices': json.dumps(prices),
-    }
-    return render(request, 'Temperature_dashboard/dashboard.html',context)
-
-#def vue_test(request):
-
-
 def temperature_chart_view(request):
     date = []
     data = []
@@ -76,7 +64,7 @@ def temperature_chart_view(request):
         'listData': listData
     }
     #print(context)
-    return render(request, 'dashboard.html', context)
+    return render(request, 'temperature_chart.html', context)
 
 def update_chart(request):
     global tz

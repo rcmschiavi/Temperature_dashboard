@@ -2,3 +2,5 @@ __pycache__
 /venv/bin/f2py3
 /venv/bin/f2py
 /venv/bin/f2py3.6
+mysite/manage.py
+mysite/mysite/settings.py
