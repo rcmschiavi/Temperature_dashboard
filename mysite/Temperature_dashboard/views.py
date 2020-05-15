@@ -5,6 +5,7 @@ from django.http import HttpRequest
 from django.views.decorators .csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import Temperature
+from django.utils import timezone
 import datetime
 import pandas as pd
 import numpy as np
@@ -51,31 +52,20 @@ def post(request):
         return response
 
 def temperature_chart_view(request):
-    date = []
-    data = []
-    date_handler = lambda obj: (
-        obj.isoformat()
-        if isinstance(obj, (datetime.datetime, datetime.date))
-        else None
-    )
-    queryset = Temperature.objects.order_by('-REGISTERED_AT').values('TEMPERATURE','REGISTERED_AT')
-    listData = get_temp_hour(queryset)
+    timezone.now()
+    listData = get_temp_by_hour()
     context = {
         'listData': listData
     }
-    #print(context)
     return render(request, 'temperature_chart.html', context)
 
 def update_chart(request):
-    global tz
-    date = []
-    data = []
     date_handler = lambda obj: (
         obj.isoformat()
         if isinstance(obj, (datetime.datetime, datetime.date))
         else None
     )
-    query = Temperature.objects.order_by('-REGISTERED_AT')[0]
+    query = Temperature.objects.order_by('-REGISTERED_AT').first()
     context = {
         'temp': query.TEMPERATURE,
         'time': query.REGISTERED_AT.astimezone(tz).__format__('%c')
@@ -84,17 +74,21 @@ def update_chart(request):
     return JsonResponse(context)
 
 
-def get_temp_hour(dataset):
+def get_temp_by_hour():
     global tz
-    df = pd.DataFrame(list(dataset))
-    df = df[df.TEMPERATURE >= -120]
-    df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
-    df.REGISTERED_AT = df.REGISTERED_AT.dt.tz_convert('America/Caracas')
     date = datetime.datetime.now(tz)
     day = int(date.strftime("%d"))
     month = int(date.strftime("%m"))
     year = int(date.strftime("%Y"))
-    df = filter_date(df,year,month,1)
+    # A complete query that returns just the values from the current day
+    dataset = Temperature.objects.order_by('-REGISTERED_AT').filter(REGISTERED_AT__range=(
+                                            datetime.datetime(year, month, day, tzinfo=pytz.UTC),
+                                            datetime.datetime(year, month, day, tzinfo=pytz.UTC) +
+                                            datetime.timedelta(days=1))).exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
+
+    df = pd.DataFrame(list(dataset))
+    df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
+    df.REGISTERED_AT = df.REGISTERED_AT.dt.tz_convert('America/Caracas')
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
     hour = pd.to_timedelta(df.REGISTERED_AT.dt.hour, unit='H')
     hour.name = "REGISTERED_AT"
@@ -104,18 +98,17 @@ def get_temp_hour(dataset):
     df2.TEMPERATURE = df2.TEMPERATURE.round(2)
     return listData
 
-
 def filter_date(df, year,month,day):
+    print("Len antes: " + str(len(df)))
     df = df[df.REGISTERED_AT.dt.year==year]
     df = df[df.REGISTERED_AT.dt.month==month]
     df = df[df.REGISTERED_AT.dt.day==day]
+    print("Len depois: " + str(len(df)))
     return df
 
 def format_data(df, df2):
-    #[{v: [8, 0, 0], f: '8 am'}, 1, .25, 5]
     dataDict: {}
     listData = []
-    listHour = []
     for hour in df2.index:
         a = np.timedelta64(hour.to_numpy(), 'ns')
         a = int(a/3600000000000)
@@ -124,7 +117,3 @@ def format_data(df, df2):
         listHour = [dataDict, df3.max().TEMPERATURE,df3.mean().round(2).TEMPERATURE,df3.min().TEMPERATURE]
         listData.append(listHour)
     return listData
-
-
-def test_vue(request):
-    return render(request, 'test_vue/test_vue.html')
