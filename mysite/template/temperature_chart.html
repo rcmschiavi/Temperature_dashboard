@@ -3,6 +3,7 @@
 <html>
 	<head>
 		<title>Temperature chart</title>
+		<link rel="shortcut icon" href="https://img.icons8.com/cotton/64/000000/administrator-male.png"/>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="" />
 		<meta name="keywords" content="" />
@@ -47,7 +48,7 @@
 			<section id="main" class="wrapper style1">
 				<header class="major">
 					<h2>Temperature Dashboard for IoT device</h2>
-					<p>A small hobbist project involving Cloud and Electronics</p>
+					<p style="color:#842407">A small hobbist project involving Cloud and Electronics</p>
 				</header>
 				<div class="container">
 
@@ -62,7 +63,7 @@
 								<h2 style="color:#bb2313">What is this about!?</h2>
 								<span>
 									<p>    As a<small style="font-size:10px;">n almost</small> Mechatronics Engineer, I love to play around with IoT and electronics. So I decided to take this passion and implement it in my webpage, joining a real world thing, climate and temperature, with the virtual world.</p>
-									<p>    When you live in a place as hot as the state I grew up, you get used to complain about the hot wheather, but in generally we actually don't know the temperature.</p>
+									<p>    When you live in a place as hot as the state I grew up, you get used to complain about the hot wheather, but generally we actually don't know the temperature.</p>
 									<p>   Thanks to google and wheater services, nowadays it's easy to know how hot it is, but I'm very skeptical and decided to get the data by myself.</p>
 									<br>
 								</span>
@@ -84,7 +85,7 @@
 									<li><b style="color:red">1KΩ resistor</b> - Required for the sensor.</li>
 								</ul>
 								<h3 style="color:#47c707">The cloud</h3>
-								<p>As you may noticed, I'm using python anywhere, which is made with a instance of AWS, but with a easier setup, faster to deploy.</p>
+								<p>As you may noticed, I'm using python anywhere, Micro PaaS for Python web apps, with an easier setup than AWS, thus faster to deploy.</p>
 								<h1 style="color:blue;font-size:20px">I haven't finished this article yet. Other more important things have to be done.</h1>>
 								<h2 style="color:#01a799;visibility:hidden">What still has to be done?</h2>
 							</span>
@@ -115,5 +116,9 @@
 
 	</body>
 
-<script> callChart({{listData | safe}});</script>
+<script>
+
+callChart({{listData | safe}});
+
+</script>
 </html>
