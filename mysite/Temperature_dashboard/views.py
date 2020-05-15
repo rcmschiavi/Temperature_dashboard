@@ -82,8 +82,8 @@ def get_temp_by_hour():
     year = int(date.strftime("%Y"))
     # A complete query that returns just the values from the current day
     dataset = Temperature.objects.order_by('-REGISTERED_AT').filter(REGISTERED_AT__range=(
-                                            datetime.datetime(year, month, day, tzinfo=pytz.UTC),
-                                            datetime.datetime(year, month, day, tzinfo=pytz.UTC) +
+                                            datetime.datetime(year, month, 1, tzinfo=pytz.UTC),
+                                            datetime.datetime(year, month, 1, tzinfo=pytz.UTC) +
                                             datetime.timedelta(days=1))).exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
 
     df = pd.DataFrame(list(dataset))
@@ -94,8 +94,6 @@ def get_temp_by_hour():
     hour.name = "REGISTERED_AT"
     df2 = df.groupby(hour).mean()
     listData = format_data(df, df2)
-    df2.index = df2.index.astype(str)
-    df2.TEMPERATURE = df2.TEMPERATURE.round(2)
     return listData
 
 def filter_date(df, year,month,day):
@@ -107,13 +105,15 @@ def filter_date(df, year,month,day):
     return df
 
 def format_data(df, df2):
+    # Function to format the data for google charts data format, also got the max and min temperature
     dataDict: {}
     listData = []
     for hour in df2.index:
+        print(hour)
         a = np.timedelta64(hour.to_numpy(), 'ns')
         a = int(a/3600000000000)
-        df3 = df[df.REGISTERED_AT.dt.hour == a]
+        df_hour = df[df.REGISTERED_AT.dt.hour == a]
         dataDict = {"v":[a,0,0],"f":"Time: "+  str(a)+":00"}
-        listHour = [dataDict, df3.max().TEMPERATURE,df3.mean().round(2).TEMPERATURE,df3.min().TEMPERATURE]
+        listHour = [dataDict, df_hour.max().TEMPERATURE,df_hour.mean().round(2).TEMPERATURE,df_hour.min().TEMPERATURE]
         listData.append(listHour)
     return listData
