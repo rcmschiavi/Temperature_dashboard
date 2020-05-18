@@ -80,12 +80,12 @@ def get_temp_by_hour():
     month = int(date.strftime("%m"))
     year = int(date.strftime("%Y"))
     # A complete query that returns just the values from the current day
-    dataset = Temperature.objects.order_by('-REGISTERED_AT').filter(REGISTERED_AT__range=(
-        datetime.datetime(year, month, 1, tzinfo=pytz.UTC),
-        datetime.datetime(year, month, 1, tzinfo=pytz.UTC) +
-        datetime.timedelta(days=1))).exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
+    dataset = Temperature.objects.order_by('-REGISTERED_AT')\
+        .filter(REGISTERED_AT__gte=datetime.datetime(year, month, day, tzinfo=tz))\
+        .exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
 
     df = pd.DataFrame(list(dataset))
+    print(df.columns)
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
     df.REGISTERED_AT = df.REGISTERED_AT.dt.tz_convert('America/Caracas')
     df.TEMPERATURE = df.TEMPERATURE.astype(float)
