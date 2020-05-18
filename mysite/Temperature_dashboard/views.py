@@ -1,8 +1,7 @@
 # coding: utf-8
 from django.shortcuts import render
 from django.http import HttpResponse
-from django.http import HttpRequest
-from django.views.decorators .csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import Temperature
 from django.utils import timezone
@@ -10,17 +9,13 @@ import datetime
 import pandas as pd
 import numpy as np
 import pytz
-
-import csv
 import json
 import os
 import sys
 
-tz = pytz.timezone('America/Caracas')
 
 def index(request):
     return render(request, 'index.html')
-# Create your views here.
 
 
 @csrf_exempt
@@ -32,10 +27,11 @@ def post(request):
             HASH = data['HASH']
         except:
             HASH = ""
-        if(HASH == "HA3958KTPrs9*#8"): # A HASH provided by the devices to avoid users to create posts
-            with open(os.path.join(sys.path[0],"data.csv"),"a") as file: # Use file to refer to the file object
-                file.write(str(temp)+"\n")
-            dataDB = Temperature(TEMPERATURE = temp)
+        # A HASH provided by the devices to avoid users to create posts
+        if (HASH == "HA3958KTPrs9*#8"):
+            with open(os.path.join(sys.path[0], "data.csv"), "a") as file:  # Use file to refer to the file object
+                file.write(str(temp) + "\n")
+            dataDB = Temperature(TEMPERATURE=temp)
             dataDB.save()
             print("A temperatura é: {0}C".format(data['temperatura']))
 
@@ -44,12 +40,13 @@ def post(request):
             print("The device haven't provide the right HASH.")
             return HttpResponse("You haven't provide the right HASH.")
     else:
-        test_file = open(os.path.join(sys.path[0],"data.csv"), 'rb')
+        test_file = open(os.path.join(sys.path[0], "data.csv"), 'rb')
         response = HttpResponse(content=test_file)
         response['Content-Type'] = 'text/csv'
-        #response['Content-Disposition'] = 'attachment; filename='
+        # response['Content-Disposition'] = 'attachment; filename='
 
         return response
+
 
 def temperature_chart_view(request):
     timezone.now()
@@ -59,7 +56,9 @@ def temperature_chart_view(request):
     }
     return render(request, 'temperature_chart.html', context)
 
+
 def update_chart(request):
+    tz = pytz.timezone('America/Caracas')
     date_handler = lambda obj: (
         obj.isoformat()
         if isinstance(obj, (datetime.datetime, datetime.date))
@@ -70,21 +69,21 @@ def update_chart(request):
         'temp': query.TEMPERATURE,
         'time': query.REGISTERED_AT.astimezone(tz).__format__('%c')
     }
-    #print("Chamou:" + str(context))
+    # print("Chamou:" + str(context))
     return JsonResponse(context)
 
 
 def get_temp_by_hour():
-    global tz
+    tz = pytz.timezone('America/Caracas')
     date = datetime.datetime.now(tz)
     day = int(date.strftime("%d"))
     month = int(date.strftime("%m"))
     year = int(date.strftime("%Y"))
     # A complete query that returns just the values from the current day
     dataset = Temperature.objects.order_by('-REGISTERED_AT').filter(REGISTERED_AT__range=(
-                                            datetime.datetime(year, month, 1, tzinfo=pytz.UTC),
-                                            datetime.datetime(year, month, 1, tzinfo=pytz.UTC) +
-                                            datetime.timedelta(days=1))).exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
+        datetime.datetime(year, month, 1, tzinfo=pytz.UTC),
+        datetime.datetime(year, month, 1, tzinfo=pytz.UTC) +
+        datetime.timedelta(days=1))).exclude(TEMPERATURE__lte=-120).values('TEMPERATURE', 'REGISTERED_AT')
 
     df = pd.DataFrame(list(dataset))
     df.REGISTERED_AT = pd.to_datetime(df.REGISTERED_AT)
@@ -96,13 +95,15 @@ def get_temp_by_hour():
     listData = format_data(df, df2)
     return listData
 
-def filter_date(df, year,month,day):
+
+def filter_date(df, year, month, day):
     print("Len antes: " + str(len(df)))
-    df = df[df.REGISTERED_AT.dt.year==year]
-    df = df[df.REGISTERED_AT.dt.month==month]
-    df = df[df.REGISTERED_AT.dt.day==day]
+    df = df[df.REGISTERED_AT.dt.year == year]
+    df = df[df.REGISTERED_AT.dt.month == month]
+    df = df[df.REGISTERED_AT.dt.day == day]
     print("Len depois: " + str(len(df)))
     return df
+
 
 def format_data(df, df2):
     # Function to format the data for google charts data format, also got the max and min temperature
@@ -111,9 +112,9 @@ def format_data(df, df2):
     for hour in df2.index:
         print(hour)
         a = np.timedelta64(hour.to_numpy(), 'ns')
-        a = int(a/3600000000000)
+        a = int(a / 3600000000000)
         df_hour = df[df.REGISTERED_AT.dt.hour == a]
-        dataDict = {"v":[a,0,0],"f":"Time: "+  str(a)+":00"}
-        listHour = [dataDict, df_hour.max().TEMPERATURE,df_hour.mean().round(2).TEMPERATURE,df_hour.min().TEMPERATURE]
+        dataDict = {"v": [a, 0, 0], "f": "Time: " + str(a) + ":00"}
+        listHour = [dataDict, df_hour.max().TEMPERATURE, df_hour.mean().round(2).TEMPERATURE, df_hour.min().TEMPERATURE]
         listData.append(listHour)
     return listData
