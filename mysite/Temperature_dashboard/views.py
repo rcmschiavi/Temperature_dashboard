@@ -40,12 +40,6 @@ def post_temperature(request):
             return HttpResponse(200)
         else:
             return HttpResponse("You haven't provide the right HASH.")
-    else:
-        test_file = open(os.path.join(sys.path[0], "data.csv"), 'rb')
-        response = HttpResponse(content=test_file)
-        response['Content-Type'] = 'text/csv'
-
-        return response
 
 
 def temperature_chart_view(request):
