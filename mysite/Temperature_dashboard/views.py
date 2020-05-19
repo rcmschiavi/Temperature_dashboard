@@ -33,8 +33,6 @@ def post_temperature(request):
 
         # A HASH provided by the devices to avoid users to create posts
         if post_hash == settings.SENSOR_HASH_POSTING:
-            with open(os.path.join(sys.path[0], "data.csv"), "a") as file:  # Use file to refer to the file object
-                file.write(str(temp) + "\n")
             data_db = Temperature(TEMPERATURE=temp)
             data_db.save()
             print("A temperatura é: {0}C".format(data['temperatura']))
