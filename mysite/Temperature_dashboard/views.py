@@ -11,12 +11,15 @@ import pandas as pd
 import numpy as np
 import pytz
 import json
-import os
-import sys
-
 
 def index(request): return render(request, 'index.html')
 
+
+def resume(request):
+    with open('/home/schiavi/django_learning/mysite/Temperature_dashboard/resume.pdf', 'r') as pdf:
+        response = HttpResponse(pdf.read(), contenttype='application/pdf')
+        response['Content-Disposition'] = 'inline;filename=resume.pdf'
+        return response
 
 @csrf_exempt
 def post_temperature(request):
