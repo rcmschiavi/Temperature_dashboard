@@ -1,8 +1,4 @@
 from django.db import models
-from django.utils import timezone
-from django.template.defaultfilters import slugify
-from django.contrib.auth.models import User
-
 # Create your models here.
 
 class Temperature(models.Model):
@@ -16,4 +12,7 @@ class Temperature(models.Model):
 
 # On python anywhere I had to create the table manually, with the following command:
 # CREATE TABLE TEMPERATURE (id int NOT NULL AUTO_INCREMENT, TEMPERATURE decimal(5,2), REGISTERED_AT datetime, primary key (id));
+# Later I had to add two new columns, TEMPERATURE_OBSERVATORY and TIME_OBSERVATORY, with the following commands
+# ALTER TABLE TEMPERATURE ADD COLUMN TEMPERATURE_OBSERVATORY decimal(5,2);
+# ALTER TABLE TEMPERATURE ADD COLUMN TIME_OBSERVATORY DATETIME;
 # Logged on the right database

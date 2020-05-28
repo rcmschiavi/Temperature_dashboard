@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS = [
     'sslserver',
     'Temperature_dashboard',
+    'Agriculture',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

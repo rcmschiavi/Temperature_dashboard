@@ -28,7 +28,7 @@ def post_temperature(request):
 
     if request.method == "POST":
         data = json.loads(request.body)
-        temp = data['temperatura']
+
         try:
             post_hash = data['HASH']
         except KeyError:
@@ -38,6 +38,7 @@ def post_temperature(request):
 
         # A HASH provided by the devices to avoid users to create posts
         if post_hash == settings.SENSOR_HASH_POSTING:
+            temp = data['temperatura']
             try:
                 temp_observatory, time_observatory = get_temp.get_json()
                 data_db = Temperature(TEMPERATURE=temp, TEMPERATURE_OBSERVATORY=temp_observatory,

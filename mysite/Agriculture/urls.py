@@ -13,13 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
-
+from django.conf.urls import url
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('Agriculture.urls')) ,#When the page grows, just change this for another url
-    path('', include('Temperature_dashboard.urls')) #When the page grows, just change this for another url
-
+    url('agriculture_data', views.post_agriculture_data, name='post_agriculture_data'),
+    url('update_agriculture', views.update_agriculture, name='update_agriculture')
 ]
