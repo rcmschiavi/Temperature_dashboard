@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+
+from . import get_temperature_observatory as get_temp
 from .models import Temperature
 from django.utils import timezone
 from django.conf import settings
@@ -36,7 +38,12 @@ def post_temperature(request):
 
         # A HASH provided by the devices to avoid users to create posts
         if post_hash == settings.SENSOR_HASH_POSTING:
-            data_db = Temperature(TEMPERATURE=temp)
+            try:
+                temp_observatory, time_observatory = get_temp.get_json()
+                data_db = Temperature(TEMPERATURE=temp, TEMPERATURE_OBSERVATORY=temp_observatory,
+                                      TIME_OBSERVATORY=time_observatory)
+            except:
+                data_db = Temperature(TEMPERATURE=temp)
             data_db.save()
             print("A temperatura é: {0}C".format(data['temperatura']))
 
@@ -56,17 +63,21 @@ def temperature_chart_view(request):
 
 
 def update_chart(request):
-    tz = pytz.timezone('America/Caracas')
+    tz = pytz.timezone('America/Porto_Velho')
     query = Temperature.objects.order_by('-REGISTERED_AT').first()
     context = {
-        'temp': query.TEMPERATURE,
-        'time': query.REGISTERED_AT.astimezone(tz).__format__('%c')
+        "My_data":{'temp': query.TEMPERATURE,
+                   'time': query.REGISTERED_AT.astimezone(tz).__format__('%c')
+                   },
+        "Observatory_data":{'temp': query.TEMPERATURE_OBSERVATORY,
+                            'time': query.TIME_OBSERVATORY.astimezone(tz).__format__('%c')
+                            }
     }
     return JsonResponse(context)
 
 
 def get_temp_by_hour():
-    tz = pytz.timezone('America/Caracas')
+    tz = pytz.timezone('America/Porto_Velho')
     date = datetime.datetime.now(tz)
     day = date.day
     month = date.month
@@ -94,7 +105,7 @@ def format_data(df, df2):
     for hour in df2.index:
         delta_hour = np.timedelta64(hour.to_numpy(), 'ns')
         delta_hour = int(delta_hour / NS_IN_ONE_HOUR)
-        df_hour = df[df.REGISTERED_AT.dt.hour == a]
+        df_hour = df[df.REGISTERED_AT.dt.hour == delta_hour]
         data_dict = {"v": [delta_hour, 0, 0], "f": "Time: " + str(delta_hour) + ":00"}
         list_hour = [data_dict, df_hour.max().TEMPERATURE, df_hour.mean().round(2).TEMPERATURE, df_hour.min().TEMPERATURE]
         list_data.append(list_hour)
