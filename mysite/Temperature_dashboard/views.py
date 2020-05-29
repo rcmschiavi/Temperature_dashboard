@@ -1,4 +1,6 @@
 # coding: utf-8
+import os
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -18,8 +20,9 @@ def index(request): return render(request, 'index.html')
 
 
 def resume(request):
-    with open('/home/schiavi/django_learning/mysite/Temperature_dashboard/resume.pdf', 'r') as pdf:
-        response = HttpResponse(pdf.read(), contenttype='application/pdf')
+
+    with open(os.path.join(settings.BASE_DIR, 'assets/files/resume.pdf'), 'rb') as pdf:
+        response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'inline;filename=resume.pdf'
         return response
 
