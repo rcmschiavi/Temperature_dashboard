@@ -1,4 +1,4 @@
-__pycache__
+__pycache__pip install mpld3
 /.idea
 /venv
 /venv/bin/f2py3
@@ -6,3 +6,4 @@ __pycache__
 /venv/bin/f2py3.6
 mysite/manage.py
 mysite/mysite/settings.py
+/Learning/

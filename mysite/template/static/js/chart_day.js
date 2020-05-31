@@ -12,7 +12,7 @@ function callChart(dataVal){
 }
 function drawColColors() {
       var data = new google.visualization.DataTable();
-      data.addColumn('timeofday', 'Time of Day');
+      data.addColumn('number', 'Time of Day');
 	  data.addColumn('number', 'Max. Temperature');
       data.addColumn('number', 'Mean');
       data.addColumn('number', 'Min. Temperature');

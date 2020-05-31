@@ -18,5 +18,6 @@ from . import views
 
 urlpatterns = [
     url('agriculture_data', views.post_agriculture_data, name='post_agriculture_data'),
-    url('update_agriculture', views.update_agriculture, name='update_agriculture')
+    url('my_plant', views.application_page, name = 'my_plant'),
+    url('update_agriculture', views.update_agriculture, name ='update_agriculture')
 ]
