@@ -20,14 +20,15 @@ mimetypes.add_type("text/css", ".css", True)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SENSOR_HASH_POSTING = "HA3958KTPrs9*#8"
+SENSOR_HASH_POSTING = os.getenv('SENSOR_HASH_POSTING')
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 ### I'm aware of that, but this webpage is just a test, then I don't care if someone try to hack it
-SECRET_KEY = 'rx7keg_)j=po_u1qulxxz=w5*yki1+lu#e4x0kck$e6-bfar@j'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

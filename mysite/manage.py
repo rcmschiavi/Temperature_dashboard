@@ -1,8 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env pythonproject_folder = os.path.expanduser('~/Temperature_dashboard')
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv
 
+project_folder = os.path.expanduser(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+load_dotenv(os.path.join(project_folder, '.env'))
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')

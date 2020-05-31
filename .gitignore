@@ -7,3 +7,4 @@ __pycache__pip install mpld3
 mysite/manage.py
 mysite/mysite/settings.py
 /Learning/
+/.env
