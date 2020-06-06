@@ -1,5 +1,5 @@
 asgiref==3.2.7
-Django==3.0.5
+Django==3.0.7
 django-chartit==0.2.9
 django-sslserver==0.22
 mysqlclient==1.4.6
